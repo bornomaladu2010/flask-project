@@ -3,7 +3,6 @@ certifi==2024.8.30
 charset-normalizer==2.0.12
 click==8.0.4
 colorama==0.4.5
-dataclasses==0.8
 deepspeech==0.9.3
 Flask==2.0.3
 google-api-core==2.8.2
