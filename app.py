@@ -12,7 +12,7 @@ def calculate_age(birth_date, given_date):
 
     if days < 0:
         months -= 1
-        days += 30  # Approximate month days
+        days += calendar.monthrange(given_date.year, given_date.month - 1)[1]
 
     if months < 0:
         years -= 1
@@ -20,7 +20,14 @@ def calculate_age(birth_date, given_date):
 
     return years, months, days
 
-# HTML Template (Fixes "Were" vs "Will Be")
+# Function to properly format years, months, and days for singular/plural
+def format_age(years, months, days):
+    year_text = f"{years} year" if years == 1 else f"{years} years"
+    month_text = f"{months} month" if months == 1 else f"{months} months"
+    day_text = f"{days} day" if days == 1 else f"{days} days"
+    return f"{year_text}, {month_text}, and {day_text}"
+
+# HTML Template
 html_template = """
 <!DOCTYPE html>
 <html>
@@ -105,7 +112,7 @@ def home():
 
                     if choice == "1":  # Age Today
                         years, months, days = calculate_age(birth_date, today)
-                        result = f"Hello {first_name} {last_name}. Today, your age is {years} years, {months} months, and {days} days."
+                        result = f"Hello {first_name} {last_name}. Today, your age is {format_age(years, months, days)}."
 
                     elif choice in ["2", "3"]:  # Past or Future Age
                         check_year = request.form.get("check_year", "")
@@ -121,12 +128,9 @@ def home():
                                 years, months, days = calculate_age(birth_date, check_date)
 
                                 # 🟢 Determine whether to use "were" or "will be"
-                                if check_date < today:
-                                    verb = "were"
-                                else:
-                                    verb = "will be"
+                                verb = "were" if check_date < today else "will be"
 
-                                result = f"On {check_day}/{check_month}/{check_year}, you {verb} {years} years, {months} months, and {days} days old."
+                                result = f"On {check_day}/{check_month}/{check_year}, you {verb} {format_age(years, months, days)} old."
 
         except ValueError:
             result = "Invalid Date! Please enter a correct day for the selected month and year."
