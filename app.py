@@ -12,7 +12,9 @@ def calculate_age(birth_date, given_date):
 
     if days < 0:
         months -= 1
-        days += calendar.monthrange(given_date.year, given_date.month - 1)[1]
+        prev_month = (given_date.month - 1) if given_date.month > 1 else 12
+        prev_year = given_date.year if given_date.month > 1 else given_date.year - 1
+        days += calendar.monthrange(prev_year, prev_month)[1]
 
     if months < 0:
         years -= 1
@@ -20,12 +22,24 @@ def calculate_age(birth_date, given_date):
 
     return years, months, days
 
-# Function to properly format years, months, and days for singular/plural
+# Function to format age properly (handling singular/plural and readability)
 def format_age(years, months, days):
-    year_text = f"{years} year" if years == 1 else f"{years} years"
-    month_text = f"{months} month" if months == 1 else f"{months} months"
-    day_text = f"{days} day" if days == 1 else f"{days} days"
-    return f"{year_text}, {month_text}, and {day_text}"
+    age_parts = []
+    
+    if years > 0:
+        age_parts.append(f"{years} year" if years == 1 else f"{years} years")
+    
+    if months > 0:
+        age_parts.append(f"{months} month" if months == 1 else f"{months} months")
+    
+    if days > 0:
+        age_parts.append(f"{days} day" if days == 1 else f"{days} days")
+
+    # Join words properly for correct grammar
+    if len(age_parts) == 2:
+        return " and ".join(age_parts)
+    else:
+        return ", ".join(age_parts)
 
 # HTML Template
 html_template = """
