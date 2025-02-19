@@ -105,7 +105,7 @@ def home():
 
                     if choice == "1":  # Age Today
                         years, months, days = calculate_age(birth_date, today)
-                        result = f"Hello Mr. {first_name} {last_name}. Today, your age is {years} years, {months} months, and {days} days."
+                        result = f"Hello {first_name} {last_name}. Today, your age is {years} years, {months} months, and {days} days."
 
                     elif choice in ["2", "3"]:  # Past or Future Age
                         check_year = request.form.get("check_year", "")
